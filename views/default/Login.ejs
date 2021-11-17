@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="author" content="SemiColonWeb" />
+
+	<!-- Stylesheets
+	============================================= -->
+	<link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="css/swiper.css" type="text/css" />
+	<link rel="stylesheet" href="css/dark.css" type="text/css" />
+
+	<link rel="stylesheet" href="css/font-icons.css" type="text/css" />
+	<link rel="stylesheet" href="css/animate.css" type="text/css" />
+	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+
+	<link rel="stylesheet" href="css/custom-login.css" type="text/css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- Store Demo Specific Stylesheet -->
+	<link rel="stylesheet" href="css/colors.php?color=222222" type="text/css" /> <!-- Store Theme Color -->
+	<link rel="stylesheet" href="css/fonts.css" type="text/css" /> <!-- Store Theme Font -->
+	<link rel="stylesheet" href="store.css" type="text/css" /> <!-- Store Theme Custom CSS -->
+	<!-- / -->
+
+	<!-- Document Title
+	============================================= -->
+	<title>Login | LoLa Store</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="frame" >
+            <div class="nav">
+                <ul class="links">
+                    <li class="signin-active"><a class="btn">Existing User</a></li>
+                    <li class="signup-inactive"><a class="btn">New User</a></li>
+                </ul>
+            </div>
+            <div ng-app ng-init="checked = false" >
+                <form class="form-signin" action="/login" method="post" name="form"> <label for="fullname">Username</label>
+                    <input class="form-styling" type="text" name="username" placeholder="" /> 
+                    <label for="password">Password</label> <input class="form-styling" type="password" name="password" placeholder="" /> 
+                    <input type="checkbox" id="checkbox" /> <label for="checkbox"><span class="ui"></span>Keep me signed in</label>
+                    <div class="btn-animate"> <button type="submit" class="btn-signin">Login to your account</button> </div>
+                </form>
+                <form class="form-signup" action="/register" method="post" name="form">
+					<label for="username">Username</label> 
+					 <input class="form-styling" type="text" name="username" placeholder="" />
+					 <label for="fullname">Full name</label>
+					  <input class="form-styling" type="text" name="name" placeholder="" />
+					  
+					<label for="email">Email</label> 
+					 <input class="form-styling" type="email" name="email" placeholder="" />
+					<label for="phoneNumber">Phone number</label> 
+					 <input class="form-styling" type="phoneNumber" name="phoneNumber" placeholder="" />
+					 <label for="address">Address</label> 
+					 <input class="form-styling" type="address" name="address" placeholder="" />
+					  <label for="password">Creat password</label> 
+					  <input class="form-styling" type="password" name="password" placeholder="" /> 
+					  <button type="submit"class="btn-signup">REGISTER</button> </form>
+            </div> 
+        </div> 
+        <!-- Footer
+		============================================= -->
+		<footer id="footer" class="bg-color dark border-0">
+			<div class="section mt-0 mb-0" style="padding: 80px 0;margin-top: 100px;" >
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-sm-6">
+							<p><a href="/"><img src="/images/logo-dark.png"></a></p>
+						</div>
+						<div class="col-md-3 col-sm-6">
+							<h4 class="text-uppercase">Free Returns</h4>
+							<p class="h6 font-weight-bold">Within 30 days Guarantee</p>
+							<p>Synergistically repurpose ethical value and backend paradigms. Holisticly architect effective expertise for installed base e-markets.</p>
+						</div>
+						<div class="col-md-3 col-sm-6">
+							<h4 class="text-uppercase">Customer Service</h4>
+							<p>Odio sequi natus eveniet, dicta magni! Modi nihil quis quos at mollitia.</p>
+							<abbr title="Phone Number"><strong>Phone:</strong></abbr> (+0) 9876 543211<br>
+							<abbr title="Fax"><strong>Fax:</strong></abbr> (+0) 11 2222 3333<br>
+							<abbr title="Email Address"><strong>Email:</strong></abbr> noreply@canvas.com<br>
+						</div>
+						<div class="col-md-3 col-sm-6">
+							<h4 class="text-uppercase">Our Stores</h4>
+							<address>
+								<strong>LoLa Store:</strong><br>
+								<br>
+								107 Le Loi, District 1<br>
+								Ho Chi Minh City, Viet Nam
+							</address>
+							<abbr title="Time"><strong>Timing:</strong></abbr> Every day: 10am – 7pm<br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer><!-- #footer end -->
+        <!-- JavaScripts
+	============================================= -->
+	<script src="js/jquery.js"></script>
+	<script src="js/plugins.min.js"></script>
+
+	<!-- Footer Scripts
+	============================================= -->
+	<script src="js/functions.js"></script>
+	<script src="./js/login.js"></script>
+    </body>    
+</html>    

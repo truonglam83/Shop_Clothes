@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Info</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="SemiColonWeb" />
+
+    <!-- Stylesheets
+	============================================= -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="css/swiper.css" type="text/css" />
+    <link rel="stylesheet" href="css/dark.css" type="text/css" />
+
+    <link rel="stylesheet" href="css/font-icons.css" type="text/css" />
+    <link rel="stylesheet" href="css/animate.css" type="text/css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="css/custom.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Store Demo Specific Stylesheet -->
+    <link rel="stylesheet" href="css/colors.php?color=222222" type="text/css" />
+    <!-- Store Theme Color -->
+    <link rel="stylesheet" href="css/fonts.css" type="text/css" />
+    <!-- Store Theme Font -->
+    <link rel="stylesheet" href="css/store.css" type="text/css" />
+    <link rel="stylesheet" href="css/user-info.css" type="text/css" />
+  </head>
+  <body>
+    <div class="layout">
+      <div class="sidebar">
+        <a href="/" class="brand-logo" data-dark-logo="/images/logo-dark.png"
+          ><img src="/images/logo.png" alt="Canvas Logo"
+        /></a>
+        <ul>
+          <li><a href="#infomation" class="active">Infomation</a></li>
+          <li><a href="#history">Purchase History</a></li>
+          <li><a href="#update-info">Update Infomation</a></li>
+          <li><a href="#change-password">Change password</a></li>
+        </ul>
+      </div>
+      <div class="user-main-content" id="user-layout">
+        <section id="infomation">
+          <div class="container pt-5">
+            <div>
+              <h1>Information</h1>
+              <img
+                src="https://cdn1.vectorstock.com/i/1000x1000/23/70/man-avatar-icon-flat-vector-19152370.jpg"
+                alt="avatar"
+              />
+              <h4><%- user.name %></h4>
+              <p>Address: <%- user.address %></p>
+              <p>Phone: <%- user.phoneNumber %></p>
+              <p>Email: <%-user.email %></p>
+            </div>
+          </div>
+        </section>
+
+        <section id="history">
+          <h1>Purchase History</h1>
+
+          <div class="order-list">
+            <div class="order">
+              <% function stateString(state){ %> <% if (state==0) { %> <% return
+              "wait for confirmed" %> <% } else if (state==1) { %> <% return
+              "shipping" %> <% } else { %> <% return "shipped" %> <% }} %> <%
+              function
+              dateString(date){return`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`}
+              %> <% orders.forEach(order => { %>
+              <div class="order-container">
+                <div class="order-header">
+                  <div class="date">
+                    Date: <%- dateString(order.creationDate) %>
+                  </div>
+                  <div class="order-state">
+                    <%-order.state==0?"waiting for confirm":order.state==1?"shipping":"shipped" %> <%-
+                    %>
+                  </div>
+                </div>
+                <div class="order-body">
+                  <% JSON.parse(order.products).forEach(product => { %>
+                  <div class="order-item">
+                    <img
+                      src="<%- product.image %>"
+                      style="width: 150px; height: auto"
+                      alt=""
+                    />
+                    <div class="info">
+                      <div class="name"><%- product.name %></div>
+                      <div class="size">Size <%-product.size %></div>
+                      <div class="qty">x <%- product.quantity%></div>
+                    </div>
+                  </div>
+                  <% }) %>
+                </div>
+                <div class="order-footer">
+                  <div class="total">
+                    Total: <strong>$<%-order.total %></strong>
+                  </div>
+                  <button>Received</button>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+        </section>
+        <section id="update-info">
+          <div class="container d-flex justify-content-center update">
+            <form action="/user/update-info" method="post">
+              <h1 class="text-center">Update information</h1>
+              <div class="form-group">
+                <label for="name">Name: </label>
+                <input
+                  disabled
+                  type="text"
+                  name="name"
+                  id="name"
+                  value="<%- user.name %>"
+                />
+              </div>
+              <div class="form-group">
+                <label for="address">Address:</label>
+                <input
+                  disabled
+                  type="text"
+                  name="address"
+                  id="address"
+                  value="<%- user.address %>"
+                />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone number: </label>
+                <input
+                  type="text"
+                  disabled
+                  name="phone"
+                  id="phone"
+                  value="<%- user.phoneNumber %>"
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email: </label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  value="<%- user.email %>"
+                  disabled
+                />
+              </div>
+              <div class="text-center">
+                <button type="submit" class="submit-btn">Update</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section id="change-password">
+          <div class="container d-flex justify-content-center update">
+            <form action="/user/change-password" method="post">
+              <h1>Change password</h1>
+              <div class="form-group">
+                <label for="password">Old password</label>
+                <input type="password" name="password" id="password" />
+              </div>
+              <div class="form-group">
+                <label for="new-password">New password</label>
+                <input type="password" name="new-password" id="new-password" />
+              </div>
+              <div class="form-group">
+                <label for="re-password">Retype password</label>
+                <input type="password" name="re-password" id="re-password" />
+              </div>
+              <button type="submit" class="submit-btn">Change</button>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="js/user.js"></script>
+  </body>
+</html>

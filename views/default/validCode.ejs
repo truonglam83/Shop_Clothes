@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/default/header.ejs')%>
+  <body class="stretched modal-subscribe-bottom">
+    <div id="wrapper" class="clearfix">
+      <%- include('../partials/default/navbar.ejs')%>
+      <!-- Content
+		============================================= -->
+      <div
+        style="
+          display: grid;
+          height: 30vh;
+          width: 100%;
+          align-items: center;
+          margin-top: 70px;
+          padding-left: 100px;
+        "
+      >
+        <form action="" method="post">
+          <h3>We have sent a valid code to your email:</h3>
+          <label for="validCode">Code:</label>
+          <input type="text" name="code" id="code" />
+        </form>
+      </div>
+      <%- include('../partials/default/footer.ejs')%>
+    </div>
+    <!-- Go To Top
+============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- JavaScripts
+	============================================= -->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/plugins.min.js"></script>
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script src="/js/functions.js"></script>
+    <%- include("../partials/default/cartScript") %>
+    <script>
+      setCart([]);
+    </script>
+  </body>
+</html>

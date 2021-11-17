@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/default/header.ejs')%>
+  <head>
+    <link rel="stylesheet" href="css/cart.css" />
+  </head>
+  <body class="stretched modal-subscribe-bottom">
+    <div id="wrapper" class="clearfix">
+      <%- include('../partials/default/navbar.ejs')%>
+
+      <div class="full-window">
+        <div class="login-needed-form">
+          <h4>You need to login to continue</h4>
+          <p><a href="/login">Login</a></p>
+        </div>
+      </div>
+      <!-- #content end -->
+      <%- include('../partials/default/footer.ejs')%>
+    </div>
+    <!-- Go To Top
+============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- JavaScripts
+	============================================= -->
+    <script src="js/jquery.js"></script>
+    <script src="js/plugins.min.js"></script>
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script src="js/functions.js"></script>
+
+    <script>
+      $(document).ready(changeHeaderColor);
+      $(window).on("resize", changeHeaderColor);
+
+      function changeHeaderColor() {
+        if (jQuery(window).width() > 991.98) {
+          jQuery("#header").hover(
+            function () {
+              if (!$(this).hasClass("sticky-header")) {
+                $(this).addClass("hover-light").removeClass("dark");
+                SEMICOLON.header.logo();
+              }
+              $("#wrapper").addClass("header-overlay");
+            },
+            function () {
+              if (!$(this).hasClass("sticky-header")) {
+                $(this).removeClass("hover-light").addClass("dark");
+                SEMICOLON.header.logo();
+              }
+              $("#wrapper").removeClass("header-overlay");
+            }
+          );
+        }
+      }
+
+      jQuery("#modal-subscribe-form").on("formSubmitSuccess", function () {
+        $("#modal-subscribe").addClass("fadeOutDown");
+        setTimeout(function () {
+          $("#modal-subscribe").modal("hide");
+        }, 400);
+        $("#modal-subscribe").attr("displayed", "false");
+      });
+    </script>
+    <%- include("../partials/default/cartScript") %>
+  </body>
+</html>

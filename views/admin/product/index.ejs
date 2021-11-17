@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../../partials/admin/header")%>
+  <body>
+    <%- include("../../partials/admin/sidebar")%>
+    <div class="background"></div>
+    <div class="main-content">
+      <div class="header">
+        <h1>Product</h1>
+        <div class="search">
+          <input type="text" name="search" id="search" placeholder="Search" />
+          <label for="search"><i class="fa fa-search"></i></label>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="top-collection">
+          <h2>Product Table</h2>
+          <a href="/admin/product/create"
+            ><i class="fas fa-plus"></i> <span>Add product</span></a
+          >
+        </div>
+        <hr />
+        <table class="collection-table">
+          <tr class="product-table-row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Preview image</th>
+            <th>More</th>
+          </tr>
+          <% products.forEach((element,idx) => { %>
+          <tr class="product-table-row">
+            <td><%- idx %></td>
+            <td class="bold"><%- element.name %></td>
+            <td><%- element.category.name %></td>
+            <td><%- element.price %></td>
+            <td><img src="<%- element.images[0] %>" alt="preview image" /></td>
+            <td>
+              <a href="/admin/product/update/<%- element._id %> " class="edit"
+                >Edit</a
+              >
+              <a href="/admin/product/remove/<%- element._id %>" class="remove"
+                >Remove</a
+              >
+            </td>
+          </tr>
+          <% }) %>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

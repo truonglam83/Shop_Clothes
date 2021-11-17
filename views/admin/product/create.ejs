@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../../partials/admin/header")%> <%-
+  include("../../partials/admin/modal") %>
+  <body>
+    <%- include("../../partials/admin/sidebar")%>
+    <div class="main-content">
+      <div class="header">
+        <h1>Category > Create</h1>
+        <div class="search">
+          <input type="text" name="search" id="search" placeholder="Search" />
+          <label for="search"><i class="fa fa-search"></i></label>
+        </div>
+      </div>
+      <div class="wrapper">
+        <form action="/api/product" method="post" id="create-product">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" />
+          </div>
+          <div class="form-group">
+            <label for="category:">Category:</label>
+            <select type="select" name="category" id="category">
+              <% categories.forEach(element => { %>
+              <option value="<%- element._id %>"><%- element.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" name="price" id="price" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" name="description" id="description" />
+          </div>
+          <div class="form-group">
+            <label for="images">Images:</label>
+            <input type="file" name="images" id="images" multiple="multiple" />
+          </div>
+          <button type="button" id="category-show-img">Preview image</button>
+          <div id="preview-category"></div>
+          <div class="text-center">
+            <button type="submit">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="loading" class="hidden">
+      <div class="overlayer"></div>
+      <div class="modal">
+        <div class="modal-header"></div>
+        <div class="modal-body">
+          <div class="flex-center">
+            <div class="loader">Loading...</div>
+          </div>
+          <p class="text-center">Loading....</p>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+    <script>
+      function delay(t, v) {
+        return new Promise(function (resolve) {
+          setTimeout(resolve.bind(null, v), t);
+        });
+      }
+    </script>
+    <script>
+      const form = document.getElementById("create-product");
+      const previewCategory = document.getElementById("preview-category");
+      const previewBtn = document.getElementById("category-show-img");
+      const imgInput = document.getElementById("images");
+      //show preview
+      function showPreview() {
+        const files = imgInput.files;
+        console.log(files);
+        if (files.length > 0) {
+          Object.keys(files).forEach((key) => {
+            const imgE = document.createElement("IMG");
+            imgE.setAttribute("src", URL.createObjectURL(files[key]));
+            previewCategory.append(imgE);
+          });
+        }
+        previewBtn.innerText = "Hide preview image";
+      }
+      function hidePreview() {
+        previewCategory.innerHTML = "";
+        previewBtn.innerText = "Preview image";
+      }
+      function togglePreview(event) {
+        if (previewBtn.innerText !== "Preview image") {
+          hidePreview();
+        } else showPreview();
+      }
+      previewBtn.addEventListener("click", togglePreview);
+      //submit form
+      async function SubmitForm(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        showModal("loading");
+        let response = await fetch("/api/products", {
+          method: "POST",
+          header: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: formData,
+        });
+        console.log("begin delay");
+        await delay(200);
+        console.log("end delay");
+        hideModal("loading");
+        response = await response.json();
+        window.location.pathname = "admin/product";
+        console.log(response);
+      }
+
+      form.addEventListener("submit", SubmitForm);
+    </script>
+  </body>
+</html>

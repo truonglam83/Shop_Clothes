@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../../partials/default/header')%>
+  <body class="stretched">
+    <div id="wrapper" class="clearfix">
+      <%- include("../../partials/default/navbar")%>
+      <div class="container" style="padding-top: 70px; margin-bottom: 50px">
+        <div class="breadcrumbs">Product > Product Name</div>
+        <div class="row">
+          <div class="col-md-8 d-flex justify-content-center">
+            <div class="product-slider">
+              <div class="product">
+                <div class="product-image position-relative">
+                  <div
+                    class="fslider"
+                    data-arrows="false"
+                    data-pagi="false"
+                    data-speed="400"
+                    data-pause="6000"
+                    data-thumbs="true"
+                  >
+                    <div class="flexslider">
+                      <div class="slider-wrap">
+                        <% product.images.forEach(image => { %>
+                        <div class="slide" data-thumb="<%- image %>">
+                          <a href="#"
+                            ><img src="<%- image %>" alt="<%- product.name %>"
+                          /></a>
+                        </div>
+                        <% }) %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="information col-md-4">
+            <h5 class="my-0" id="product-category">
+              <%- product.category.name %>
+            </h5>
+            <h3 class="mt-0 mb-1" id="product-name"><%- product.name %></h3>
+            <p class="my-0" id="product-price"><%- product.price %>$</p>
+            <hr class="my-2" />
+            <p class="mt-0 mb-2" style="font-weight: bold">Select size:</p>
+            <div class="d-flex">
+              <div class="mx-2">
+                <input type="radio" name="size" id="S" value="S" checked />
+                <label for="S" class="label">S</label>
+              </div>
+              <div class="mx-2">
+                <input type="radio" name="size" id="M" value="M" />
+                <label for="M" class="label">M</label>
+              </div>
+              <div class="mx-2">
+                <input type="radio" name="size" id="L" value="L" />
+                <label for="L" class="label">L</label>
+              </div>
+              <div class="mx-2">
+                <input type="radio" name="size" id="XL" value="XL" />
+                <label for="XL" class="label">XL</label>
+              </div>
+            </div>
+            <p class="mt-0 mb-2">Quantity:</p>
+            <input
+              type="number"
+              name="quantity"
+              id="quantity"
+              value="1"
+              min="1"
+              max="3"
+            />
+            <p class="mt-0 mb-2 font-weight-bold">Decription:</p>
+            <p class="my-0"><%- product.description %></p>
+            <div class="text-center">
+              <button class="add2cartBtn my-4" id="add2cartbtn">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="product_id" data-id="<%- product._id %>"></div>
+      <%- include("../../partials/default/footer")%>
+    </div>
+    <!-- Go To Top
+============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- JavaScripts
+	============================================= -->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/plugins.min.js"></script>
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script src="/js/functions.js"></script>
+
+    <script>
+      $(document).ready(changeHeaderColor);
+      $(window).on("resize", changeHeaderColor);
+
+      function changeHeaderColor() {
+        if (jQuery(window).width() > 991.98) {
+          jQuery("#header").hover(
+            function () {
+              if (!$(this).hasClass("sticky-header")) {
+                $(this).addClass("hover-light").removeClass("dark");
+                SEMICOLON.header.logo();
+              }
+              $("#wrapper").addClass("header-overlay");
+            },
+            function () {
+              if (!$(this).hasClass("sticky-header")) {
+                $(this).removeClass("hover-light").addClass("dark");
+                SEMICOLON.header.logo();
+              }
+              $("#wrapper").removeClass("header-overlay");
+            }
+          );
+        }
+      }
+
+      jQuery("#modal-subscribe-form").on("formSubmitSuccess", function () {
+        $("#modal-subscribe").addClass("fadeOutDown");
+        setTimeout(function () {
+          $("#modal-subscribe").modal("hide");
+        }, 400);
+        $("#modal-subscribe").attr("displayed", "false");
+      });
+    </script>
+    <%- include("../../partials/default/cartScript") %>
+
+    <!-- add to cart script -->
+    <script>
+      const getProductInfo = () => {
+        const _id = document.getElementById("product_id").dataset.id;
+        const name = document.getElementById("product-name").innerText;
+        const category = document.getElementById("product-category").innerText;
+        const price = parseInt(
+          document.getElementById("product-price").innerText
+        );
+        const size = document
+          .querySelector("input[name='size']:checked")
+          .getAttribute("value");
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const image = document
+          .querySelector(".slide>a>img")
+          .getAttribute("src");
+        return { _id, name, price, size, category, quantity, image };
+      };
+      const checkProductExist = (product, cart) => {
+        let idx = -1;
+        for (let i = 0; i < cart.length; i++) {
+          if (product._id === cart[i]._id && product.size === cart[i].size) {
+            return i;
+          }
+        }
+        return idx;
+      };
+      const saveProduct2Cart = (product, cart) => {
+        if (checkProductExist(product, cart) !== -1) {
+          cart[checkProductExist(product, cart)].quantity += product.quantity;
+        } else {
+          cart.push(product);
+        }
+        renderCart(cart);
+        setCart(cart);
+        return cart;
+      };
+      const add2CartBtn = document.getElementById("add2cartbtn");
+      add2CartBtn.addEventListener("click", () => {
+        const cart = getCart();
+        const item = getProductInfo();
+        saveProduct2Cart(item, cart);
+      });
+    </script>
+  </body>
+</html>

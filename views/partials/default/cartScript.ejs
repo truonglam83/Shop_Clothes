@@ -1,0 +1,63 @@
+<script>
+  const storage = window.localStorage;
+  const getCart = () => {
+    const cart = storage.getItem("cart");
+    if (cart) return JSON.parse(cart);
+    return [];
+  };
+  const setCart = (cart) => {
+    storage.setItem("cart", JSON.stringify(cart));
+  };
+
+  const cartItem = (item) => {
+    const cartString = `
+                  <div class="top-cart-item-image">
+                    <a href="/product/${item._id}"
+                      ><img
+                        src="${item.image}"
+                        alt="${item.name}"
+                    /></a>
+                  </div>
+                  <div class="top-cart-item-desc">
+                    <div class="top-cart-item-desc-title">
+                      <a href="/product/${item._id}" class="font-weight-normal"
+                        >${item.name} <span class="size-span">size ${item.size}</span></a
+                      >
+                      <span class="top-cart-item-price d-block">$${item.price}</span>
+                    </div>
+                    <div class="top-cart-item-quantity font-weight-semibold">
+                      x ${item.quantity}
+                    </div>
+                  </div>
+                `;
+    const cartItem = document.createElement("div");
+    cartItem.classList.add("top-cart-item");
+    cartItem.innerHTML = cartString;
+    return cartItem;
+  };
+  const renderCart = (items) => {
+    const itemsE = items.map((item) => cartItem(item));
+    const quantity = items.reduce((prev, cur) => {
+      return prev + cur["quantity"];
+    }, 0);
+    const quantityBadge = document.getElementsByClassName("top-cart-number")[0];
+    quantityBadge.innerHTML = quantity;
+    //set cart items
+    const cartListE = document.getElementsByClassName("top-cart-items")[0];
+    cartListE.innerHTML = "";
+    itemsE.forEach((item) => {
+      cartListE.prepend(item);
+    });
+    //set cart total
+    const total = items.reduce((prev, cur) => {
+      return prev + cur["quantity"] * cur["price"];
+    }, 0);
+    const totalE = document.getElementsByClassName("top-checkout-price")[0];
+    totalE.innerText = `$${total}`;
+  };
+
+  window.addEventListener("load", () => {
+    var cart = getCart() || [];
+    renderCart(cart);
+  });
+</script>

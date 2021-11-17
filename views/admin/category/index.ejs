@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../../partials/admin/header")%>
+  <body>
+    <%- include("../../partials/admin/sidebar")%>
+    <div class="background"></div>
+    <div class="main-content">
+      <div class="header">
+        <h1>Category</h1>
+        <div class="search">
+          <input type="text" name="search" id="search" placeholder="Search" />
+          <label for="search"><i class="fa fa-search"></i></label>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="top-collection">
+          <h2>Category Table</h2>
+          <a href="/admin/category/create"
+            ><i class="fas fa-plus"></i> <span>Add category</span></a
+          >
+        </div>
+        <hr />
+        <table class="collection-table">
+          <tr class="col-table-row">
+            <th>Id</th>
+            <th>Title</th>
+            <th>No. products</th>
+            <th>More</th>
+          </tr>
+          <% categories.forEach((element,idx) => { %>
+          <tr class="col-table-row">
+            <td><%- idx %></td>
+            <td class="bold"><%- element.name %></td>
+            <td><%- element.productsCount %></td>
+            <td>
+              <a href="/admin/category/edit/<%- element._id %> " class="edit"
+                >Edit</a
+              >
+              <a href="/admin/category/remove/<%- element._id %>" class="remove"
+                >Remove</a
+              >
+            </td>
+          </tr>
+          <% }) %>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

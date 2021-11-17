@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/default/header.ejs')%>
+  <head>
+    <link rel="stylesheet" href="css/cart.css" />
+  </head>
+  <body class="stretched modal-subscribe-bottom">
+    <div id="wrapper" class="clearfix">
+      <%- include('../partials/default/navbar.ejs')%>
+      <div class="container">
+        <h1>Your cart</h1>
+        <section class="cart">
+          <div class="cart-items">
+            <h3>Bag</h3>
+          </div>
+          <div class="summary">
+            <h3>Summary</h3>
+            <div class="mt-1">
+              <div class="sub-total d-flex justify-content-between">
+                <div>Subtotal</div>
+                <div id="subtotal">260$</div>
+              </div>
+              <div class="shipping d-flex justify-content-between">
+                <div>Shipping Fee:</div>
+                <div>0$</div>
+              </div>
+              <div class="tax d-flex justify-content-between">
+                <div>Estimate Tax:</div>
+                <div>0$</div>
+              </div>
+              <hr />
+              <div class="total d-flex justify-content-between">
+                <div>Total:</div>
+                <div id="total">260$</div>
+              </div>
+            </div>
+            <a href="/checkout">Check out</a>
+          </div>
+        </section>
+      </div>
+      <!-- #content end -->
+      <%- include('../partials/default/footer.ejs')%>
+    </div>
+    <!-- Go To Top
+============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- JavaScripts
+	============================================= -->
+    <script src="js/jquery.js"></script>
+    <script src="js/plugins.min.js"></script>
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script src="js/functions.js"></script>
+
+    <script>
+      $(document).ready(changeHeaderColor);
+      $(window).on("resize", changeHeaderColor);
+
+      function changeHeaderColor() {
+        if (jQuery(window).width() > 991.98) {
+          jQuery("#header").hover(
+            function () {
+              if (!$(this).hasClass("sticky-header")) {
+                $(this).addClass("hover-light").removeClass("dark");
+                SEMICOLON.header.logo();
+              }
+              $("#wrapper").addClass("header-overlay");
+            },
+            function () {
+              if (!$(this).hasClass("sticky-header")) {
+                $(this).removeClass("hover-light").addClass("dark");
+                SEMICOLON.header.logo();
+              }
+              $("#wrapper").removeClass("header-overlay");
+            }
+          );
+        }
+      }
+
+      jQuery("#modal-subscribe-form").on("formSubmitSuccess", function () {
+        $("#modal-subscribe").addClass("fadeOutDown");
+        setTimeout(function () {
+          $("#modal-subscribe").modal("hide");
+        }, 400);
+        $("#modal-subscribe").attr("displayed", "false");
+      });
+    </script>
+    <%- include("../partials/default/cartScript") %>
+    <script>
+      const cartPageItem = (item) => {
+        var itemString = `
+              <img src="${item.image}" alt="${item.name}" />
+              <div class="info-container">
+                <p>${item.name}</p>
+                <div class="collection">${item.category}</div>
+                <div class="size">
+                  <label for="size">Size</label>
+                  <select name="size" disabled>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                  </select>
+                </div>
+                <div class="qty">
+                  <label for="quantity">Quantity:</label>
+                  <select name="quantity" data-id=${item._id} data-size=${item.size} class="quantity-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+                <button class="remove-item-btn" data-id=${item._id} data-size=${item.size}>Remove</button>
+              </div>`;
+        const selectSizeString = `value="${item.size}"`;
+        const selectQuantityString = `value="${item.quantity}"`;
+        itemString = itemString.replace(
+          selectSizeString,
+          `${selectSizeString} selected`
+        );
+        itemString = itemString.replace(
+          selectQuantityString,
+          `${selectQuantityString} selected`
+        );
+
+        const cartItem = document.createElement("div");
+        cartItem.classList.add("cart-item");
+        cartItem.innerHTML = itemString;
+        return cartItem;
+      };
+      const renderCartPage = (cart) => {
+        //update item list
+        const itemListE = document.getElementsByClassName("cart-items")[0];
+        itemListE.innerHTML = "";
+        const itemsE = cart.map((item) => cartPageItem(item));
+        itemsE.forEach((item) => {
+          itemListE.append(item);
+        });
+        //update subtotal and total
+        const subtotalE = document.getElementById("subtotal");
+        const subtotal = cart.reduce(
+          (prev, curr) => prev + curr["quantity"] * curr["price"],
+          0
+        );
+        subtotalE.innerText = `$${subtotal}`;
+        const totalE = document.getElementById("total");
+        totalE.innerText = `$${subtotal}`;
+      };
+      const onRemoveItem = (event) => {
+        const button = event.target;
+        const id = button.dataset.id;
+        const size = button.dataset.size;
+        const cart = getCart();
+        let i = 0;
+        while (i < cart.length) {
+          console.log({ _id: cart[i]._id, size: cart[i].size });
+          if ((cart[i]._id == id) & (cart[i].size == size)) {
+            console.log(cart[i]);
+            cart.splice(i, 1);
+          }
+          ++i;
+        }
+        renderCartPage(cart);
+        setCart(cart);
+      };
+      const onChangeQuantity = (event) => {
+        console.log("change quantity");
+        const select = event.target;
+        const id = select.dataset.id;
+        const size = select.dataset.size;
+        const value = parseInt(select.value);
+        const cart = getCart();
+        let i = 0;
+        while (i < cart.length) {
+          if ((cart[i]._id == id) & (cart[i].size == size)) {
+            cart[i].quantity = value;
+          }
+          ++i;
+        }
+        renderCartPage(cart);
+        renderCart(cart);
+        setCart(cart);
+        const quantitySelects =
+          document.getElementsByClassName("quantity-select");
+        for (let select of quantitySelects) {
+          select.addEventListener("change", onChangeQuantity);
+        }
+      };
+      window.addEventListener("load", () => {
+        const cart = getCart();
+        renderCartPage(cart);
+        const removeButtons =
+          document.getElementsByClassName("remove-item-btn");
+        for (let button of removeButtons) {
+          button.addEventListener("click", onRemoveItem);
+        }
+        const quantitySelects =
+          document.getElementsByClassName("quantity-select");
+        for (let select of quantitySelects) {
+          select.addEventListener("change", onChangeQuantity);
+        }
+      });
+    </script>
+  </body>
+</html>

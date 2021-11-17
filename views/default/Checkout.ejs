@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/default/header.ejs')%>
+  <body class="stretched modal-subscribe-bottom">
+    <div id="wrapper" class="clearfix">
+      <%- include('../partials/default/navbar.ejs')%>
+      <!-- Content
+		============================================= -->
+        <div class="container">
+        <h1 style="margin-top: 80px">Check out</h1>
+      <div class="main-content">
+        <div class="left-form">
+          <form action="/checkout" method="post" id="checkout-form">
+              <h3>Fill your information</h3>
+            <div class="form-group">
+                <label for="name">Receiver Name:</label>
+              <input type="text" name="receiver" id="receiver" />
+            </div>
+            <div class="form-group">
+                <label for="name">Address:</label>
+              <input type="text" name="address" id="address" />
+            </div>
+            <div class="form-group">
+                <label for="name">Phone Number:</label>
+              <input type="text" name="phone" id="phone" />
+            </div>
+            <div class="form-group">
+                <label for="name">Email:</label>
+              <input type="text" name="email" id="email" />
+            </div>
+            <button type="submit">Go to payment ></button>
+          </form>
+        </div>
+        <div class="summary">
+            <h3>Summary</h3>
+            <div class="mt-1">
+              <div class="sub-total d-flex justify-content-between">
+                <div>Subtotal</div>
+                <div id="subtotal">260$</div>
+              </div>
+              <div class="shipping d-flex justify-content-between">
+                <div>Shipping Fee:</div>
+                <div>0$</div>
+              </div>
+              <div class="tax d-flex justify-content-between">
+                <div>Estimate Tax:</div>
+                <div>0$</div>
+              </div>
+              <hr />
+              <div class="total d-flex justify-content-between">
+                <div>Total:</div>
+                <div id="total">260$</div>
+              </div>
+            </div>
+        </div>
+
+        </div>
+      </div>
+      </div>
+      <!-- #content end -->
+      <%- include('../partials/default/footer.ejs')%>
+    </div>
+    <!-- Go To Top
+============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- JavaScripts
+	============================================= -->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/plugins.min.js"></script>
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script src="/js/functions.js"></script>
+    <%- include("../partials/default/cartScript") %>
+    <script>
+        const form = document.getElementById("checkout-form")
+        async function submitForm(){
+        const formData = new FormData(form);
+        const cart = getCart();
+        const total = cart.reduce((total,item)=>{
+            return total + item["quantity"]*item["price"]
+        },0)
+        formData.append("total",total);
+        formData.append("items",JSON.stringify(cart))
+        const JsonString = JSON.stringify(Object.fromEntries(formData))
+        const response = await fetch("/checkout",{
+          method: "POST",
+          headers:{
+          "Content-Type": "application/json",},
+          body: JsonString,
+        })
+        console.log(response);
+        if(response.status ==200){
+            window.location.pathname= "/checkout/payment"
+        }
+        }
+        form.addEventListener("submit",(event)=>{
+            event.preventDefault();
+            submitForm()
+        })
+        
+    </script>
+  </body>
+</html>

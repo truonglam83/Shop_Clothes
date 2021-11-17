@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/default/header.ejs')%>
+  <body class="stretched modal-subscribe-bottom">
+    <div id="wrapper" class="clearfix">
+      <%- include('../partials/default/navbar.ejs')%>
+      <!-- Content
+		============================================= -->
+      <div class="container">
+        <h1 style="margin-top: 80px">Payment</h1>
+        <div class="content">
+          <div class="h2">Select Payment Method</div>
+          <form action="" method="post" style="min-height: 100vh">
+            <div class="form-group-payment">
+              <input type="radio" name="payment" id="COD" />
+              <label for="COD">COD shipping</label>
+            </div>
+            <div class="form-group-payment">
+              <input type="radio" name="payment" id="visa" />
+              <label for="visa"
+                ><img src="/images/visa.png" alt="visa"
+              /></label>
+            </div>
+            <div class="form-group-payment">
+              <input type="radio" name="payment" id="momo" />
+              <label for="momo"
+                ><img src="/images/momo.png" alt="momo"
+              /></label>
+            </div>
+            <button type="submit" id="payment-submit">Continue</button>
+          </form>
+        </div>
+      </div>
+      <!-- #content end -->
+      <%- include('../partials/default/footer.ejs')%>
+    </div>
+    <!-- Go To Top
+============================================= -->
+    <div id="gotoTop" class="icon-angle-up"></div>
+
+    <!-- JavaScripts
+	============================================= -->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/plugins.min.js"></script>
+
+    <!-- Footer Scripts
+	============================================= -->
+    <script src="/js/functions.js"></script>
+    <%- include("../partials/default/cartScript") %>
+  </body>
+</html>
