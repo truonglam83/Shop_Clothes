@@ -1,5 +1,4 @@
-# shop
-# shop
+# shop project with nodejs
 This is project Shop Sport Clothes
 ![image](https://user-images.githubusercontent.com/78529041/161727490-c1859436-c809-4daf-ad87-bc673433a497.png)
 
